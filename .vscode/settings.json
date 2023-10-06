@@ -1,0 +1,14 @@
+// {
+//     "python.formatting.provider": "autopep8", // Use the "autopep8" code formatter
+//     "python.linting.enabled": true,
+//     "python.linting.pylintEnabled": true,
+//     "python.linting.pylintPath": "path/to/your/virtual/environment/bin/pylint", // Path to pylint within your virtual environment
+//     "python.linting.pylintArgs": [
+//         "--load-plugins=pylint_django", // If you use Django
+//         "--max-line-length=120" // Adjust maximum line length as needed
+//     ]
+// }
+
+{
+    
+}
