@@ -3,7 +3,7 @@ from django.utils.translation import gettext_lazy as _
 
 
 class CustomUserManager(BaseUserManager):
-  //  use_in_migrations=True
+   #use_in_migrations=True
     def create_user(self, email, password, **extra_fields):
 
         if not email:
