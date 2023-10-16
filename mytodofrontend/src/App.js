@@ -6,9 +6,15 @@ import PrivateRoute from './utils/PrivateRoute';
 import Header from './components/Header'
 import { AuthProvider } from './context/AuthContext';
 
-
 const App=() =>{
+
+
+
+
+
   return (
+    <div>
+      
     <Router>
       <AuthProvider>
       <Header/>
@@ -17,9 +23,11 @@ const App=() =>{
             <Route path="/" exact element={<Homepage/>} ></Route>
             </Route>
             <Route path="/login" exact element={<Login/>} ></Route>
+
         </Routes>
         </AuthProvider>
     </Router>
+    </div>
   );
 }
 

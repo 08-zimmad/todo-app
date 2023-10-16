@@ -10,5 +10,17 @@
 // }
 
 {
-    
-}
+    "editor.formatOnSave": true,
+    "python.formatting.provider": "none",
+    "python.linting.enabled": true,
+    "python.linting.lintOnSave": true,
+    "python.linting.pylintEnabled": true,
+    "python.linting.pylintArgs": [
+      "--load-plugin=pylint_django",
+      "--disable=django-not-configured",
+      "--django-settings-module=myTodoApp.settings",
+    ],
+    "[python]": {
+      "editor.defaultFormatter": "ms-python.autopep8"
+    }
+  }

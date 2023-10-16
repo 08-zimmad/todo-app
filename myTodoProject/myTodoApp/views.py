@@ -1,13 +1,14 @@
 from rest_framework import generics, permissions
-from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
-from .models import myTodoApp_user, Task
+from .models import CustomUser, Task
 from .serializers import CustomUserSerializer, TodoTaskSerializer
 from .permissions import IsOwnerOrReadOnly
 
+
 class myTodoApp_userCreateView(generics.CreateAPIView):
-    queryset = myTodoApp_user.objects.all()
+    queryset = CustomUser.objects.all()
     serializer_class = CustomUserSerializer
     permission_classes = [permissions.AllowAny]
+
 
 class TodoListView(generics.ListCreateAPIView):
     queryset = Task.objects.all()
@@ -17,13 +18,10 @@ class TodoListView(generics.ListCreateAPIView):
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
 
-class TodoDetailView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Task.objects.all()
+
+class TodoDetailView(generics.ListCreateAPIView):
     serializer_class = TodoTaskSerializer
-    permission_classes = [permissions.IsAuthenticated, IsOwnerOrReadOnly]
+    permission_classes = [permissions.IsAuthenticated]
 
-# class CustomTokenObtainPairView(TokenObtainPairView):
-#     pass
-
-# class CustomTokenRefreshView(TokenRefreshView):
-#     pass
+    def get_queryset(self):
+        return Task.objects.filter(user=self.request.user)
