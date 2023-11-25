@@ -5,11 +5,19 @@ from .models import Task, CustomUser
 class TodoTaskSerializer(serializers.ModelSerializer):
     class Meta:
         model = Task
-        fields = ('title', 'description', 'due_date', 'is_completed')
+        fields = ("task_id", 'title', 'description',
+                  'due_date', 'is_completed', "user")
 
 
 class CustomUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
-        fields = ('email', 'password', 'is_active', 'is_staff', 'date_joined')
-        read_only_fields = ('is_active', 'is_staff', 'date_joined')
+        fields = ('username', 'email', 'password')
+
+    def create(self, validated_data):
+
+        password = validated_data.pop('password')
+        user = CustomUser(**validated_data)
+        user.set_password(password)
+        user.save()
+        return user

@@ -144,9 +144,9 @@ AUTH_USER_MODEL = 'myTodoApp.CustomUser'
 
 
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=40),
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=120),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
-    "ROTATE_REFRESH_TOKEN": False,
+    "ROTATE_REFRESH_TOKEN": True,
 }
 
 

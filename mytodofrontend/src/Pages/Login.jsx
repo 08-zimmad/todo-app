@@ -4,38 +4,50 @@ import Button from 'react-bootstrap/Button';
 import AuthContext from "../context/AuthContext";
 import { useContext } from "react";
 import styled from 'styled-components';
+import { ToastContainer } from "react-toastify";
 
 
-
-
+// Centers the div both StyledContainer and StyledForm
+// dont know what last 2 attribs are for
 const StyledContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center;
+  margin:0;
+  padding: 0;
+  background: white;
+
 `;
 
 const StyledForm = styled(Form)`
-  max-width: 300px;
-  background-color: rgba(255, 255, 255, 0.8);
-  padding: 20px;
-  border-radius: 8px;
   text-align: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  width: 400px;
+  background: white;
+  border-radius: 10px;
+  border-width:thin;
+  background-color: rgb(251, 251, 251);
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 `;
 
+
+const Heading=styled.h1`
+  padding: 0 0 20px 0;
+`;
+
+
+// space bw elements
 const StyledFormGroup = styled(Form.Group)`
-  margin-bottom: 20px;
+  
+  // width:50%;
+  padding: 0 40px;
+  box-sizing: border-box;
+  margin: 30px 0;
 `;
 
 const StyledButton = styled(Button)`
-  background-color: #007bff;
   color: #fff;
-  &:hover {
-    background-color: #0056b3;
-  }
+  margin-bottom: 1rem;
 `;
 
 
@@ -44,20 +56,24 @@ const Login = () => {
   const { LoginUser } = useContext(AuthContext);
 
   return (
+    <div>
     <StyledContainer>
     <StyledForm onSubmit={LoginUser}>
+      <Heading>Login</Heading>
       <StyledFormGroup controlId="username">
-        <Form.Control type="text" placeholder="Username" name="Username" />
+        <Form.Control type="text" placeholder="Username" name="Username" required />
       </StyledFormGroup>
 
       <StyledFormGroup controlId="formBasicPassword">
-        <Form.Control type="password" placeholder="Password" name="Password" />
+        <Form.Control type="password" placeholder="Password" name="Password" required />
       </StyledFormGroup>
       <StyledButton variant="primary" type="submit">
         Login
       </StyledButton>
     </StyledForm>
     </StyledContainer>
+    <ToastContainer/>
+    </div>
   );
 };
 

@@ -1,6 +1,9 @@
 import { createContext, useState, useEffect } from "react";
 import jwt_decode from "jwt-decode";
 import { useNavigate } from "react-router-dom";
+import { ToastError,ToastInfo } from "../utils/Toasts";
+import { UpdateToken, getToken } from "../Api/LoginApi";
+import { decodedAccess } from "../decodedToken";
 
 
 const AuthContext = createContext();
@@ -21,35 +24,22 @@ export const AuthProvider=({children})=>{
 
 
         let loginUser=async(e)=>{
-            e.preventDefault()
-            
-            
-            ////Your own endpoind will be below
+            e.preventDefault();
             try{
-                let response=await fetch('http://localhost:8000/auth/api/token/',{
-                    method:'POST',
-                    headers:{
-                        'Content-Type':'application/json'
-                    },
-                    body:JSON.stringify({"username":e.target.Username.value, "password":e.target.Password.value})
-                })
-
-                let data= await response.json();
+                let payload={"username":e.target.Username.value, "password":e.target.Password.value}
+                const response=await getToken(payload);
                 if(response.status===200){
-                    setAuthToken(data)
-                    setUser(jwt_decode(data.access))
-                    localStorage.setItem('authToken', JSON.stringify(data))
-                    navigate('/')
+                    localStorage.setItem('authToken', JSON.stringify(response.data))
+                    setAuthToken(response.data)
+                    setUser(jwt_decode(response.data.access))
+                    navigate('/');
                 }
-                else{
-                    console.log(data)
-                    alert(data.detail+"\n Use Correct Credentials") // use status and show the error in customized way
+                else if(response.response.status===401){
+                    ToastError("Invalid Username/Password")
                 }
-                
             }
-
             catch(error) {
-                alert(error+": Backend not connected")
+                console.log(error)
           }
 
         }
@@ -58,46 +48,45 @@ export const AuthProvider=({children})=>{
 
 
 
-        // currently not in used but can be used!!!
         let LogoutUser=()=>{
+            
             setAuthToken(null)
             setUser(null)
             localStorage.removeItem('authToken')
             navigate('/login')
         }
 
-        let UpdateToken = async(e)=>{
-            console.log("Updated")
-            // e.preventDefault()
-            //Your own endpoind will be below
-            let response=await fetch('http://localhost:8000/auth/api/token/refresh/',{
-                method:'POST',
-                headers:{
-                    'Content-Type':'application/json'
-                },
-                body:JSON.stringify({"refresh":authToken.refresh})
-            })
+        const updateToken = async()=>{
+            // e.preventDefault();
+            try{
+                const response=await UpdateToken();
+                if (response.status===200){
+                    setAuthToken(response.data.access)
+                    setUser(jwt_decode(response.data.access))
+                    localStorage.setItem('authToken', JSON.stringify(response.data.access))
+                }
+                
+                else if(response.status===401 || response.response.status===401){ LogoutUser(); ToastError("login Again");}
 
-            let data= await response.json();
-
-            if (response.status===200){
-                setAuthToken(data)
-                setUser(jwt_decode(data.access))
-                localStorage.setItem('authToken', JSON.stringify(data))
-            }else{
-                LogoutUser();
             }
+            catch(err){
+                    console.log(err)
+            }
+
+            
+            
+            
 
         }
 
         let ContextData={
             user:user,
             LoginUser:loginUser,
-            UpdateToken:UpdateToken,
+            updateToken:updateToken,
             Logout:LogoutUser
         }
 
-        // You need custom JWT token from simple_jwt in order to work this properly.
+        
         // need to set the access_token time
         // need to set the refresh_token time
         // need to blacklist the old token
