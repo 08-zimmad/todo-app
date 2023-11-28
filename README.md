@@ -50,7 +50,7 @@ python -m venv {your_venv_name}
 pip install -r requirements. txt
 ```
 
-4. 'In myTodoProject` directory, run following coommad to execute the backend:
+4. In `myTodoProject` directory, run following coommad to execute the backend:
 ```bash
 python manage.py runsever
 ```
