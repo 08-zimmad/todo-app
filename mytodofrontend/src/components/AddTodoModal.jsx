@@ -11,7 +11,7 @@ import { AddTodo } from "../Api/HomePageApi";
 import { decodedAccess } from "../decodedToken";
 import { ToastError, ToastSuccess } from "../utils/Toasts";
 
-const StyledFloatingButton=styled.button`
+const StyledAddTodoModal=styled.button`
 position:fixed;
 width:60px;
 height:60px;
@@ -29,7 +29,7 @@ border: none;
 
 
 
-const FloatingButton=({updateTodos})=>{
+const AddTodoModal=({updateTodos})=>{
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
@@ -79,8 +79,13 @@ const FloatingButton=({updateTodos})=>{
           "is_completed":false,
           "user":decodedAccess().user_id
         };
+
+
+        
         const response=await AddTodo(payload);
-        if(response.status===201){updateTodos(response.data)}
+        if(response.status===201){
+          updateTodos(response.data);
+          setShow(false)}
         else ToastError("Try login Again")
       }
 
@@ -127,8 +132,8 @@ const FloatingButton=({updateTodos})=>{
         </Modal.Footer>
         </Form>
       </Modal>
-            <StyledFloatingButton onClick={handleShow}><FontAwesomeIcon icon={faPlus}  size="2xl"/></StyledFloatingButton>
+            <StyledAddTodoModal onClick={handleShow}><FontAwesomeIcon icon={faPlus}  size="2xl"/></StyledAddTodoModal>
         </Container>
     )
 }
-export default FloatingButton;
+export default AddTodoModal;

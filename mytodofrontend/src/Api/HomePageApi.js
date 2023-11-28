@@ -37,9 +37,17 @@ export const DeleteTodo=async(payload)=>{
 
 export const AddTodo=async(payload)=>{
     try{
-        console.log(payload);
         const response=await axiosInstance.post(`${API_BASE_URL}/todos/${payload.user}/`,payload);
         return response
     }
     catch(err) {return err};
+}
+
+
+export const UpdateTodo=async(payload)=>{
+    try{
+        const response=await axiosInstance.put(`${API_BASE_URL}/todos/update/${payload.task_id}/`,payload);
+        return response
+    }
+    catch(err){return err}
 }

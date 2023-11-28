@@ -65,3 +65,9 @@ class DeleteTodoitem(generics.DestroyAPIView):
     queryset = Task.objects.all()
     serializer_class = TodoTaskSerializer
     permission_classes = [permissions.IsAuthenticated]
+
+
+class UpdateTodoItem(generics.UpdateAPIView):
+    queryset = Task.objects.all()
+    serializer_class = TodoTaskSerializer
+    permission_classes = [permissions.IsAuthenticated]
